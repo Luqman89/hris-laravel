@@ -13,13 +13,16 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'),
-        ]);
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name'     => 'Super Admin',
+                'password' => Hash::make('password'),
+            ]
+        );
 
-        // assign role dari Spatie
-        $admin->assignRole('admin');
+        if (! $admin->hasRole('admin')) {
+            $admin->assignRole('admin');
+        }
     }
 }
