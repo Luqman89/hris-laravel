@@ -21,10 +21,12 @@ class EmployeeResource extends JsonResource
             'status'        => $this->status->value,
             'status_label'  => $this->status->label(),
 
-            'department' => [
-                'id'   => $this->department->id,
-                'name' => $this->department->name,
-            ],
+            'department' => $this->whenLoaded('department', function () {
+                return [
+                    'id' => $this->department->id,
+                    'name' => $this->department->name,
+                ];
+            }),
 
             'position' => [
                 'id'   => $this->position->id,

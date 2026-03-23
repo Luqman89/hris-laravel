@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Enums\EmployeeStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreEmployeeRequest extends FormRequest
 {
@@ -12,14 +13,9 @@ class StoreEmployeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -33,7 +29,7 @@ class StoreEmployeeRequest extends FormRequest
             'department_id' => 'required|exists:departments,id',
             'position_id'   => 'required|exists:positions,id',
             'hire_date'     => 'required|date',
-            'status'        => 'required|in:active,inactive',
+            'status'        => ['required', new Enum(EmployeeStatus::class)],
         ];
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Enums\AttendanceStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class AttendanceRequest extends FormRequest
 {
@@ -12,14 +13,10 @@ class AttendanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
+
     public function rules(): array
     {
         return [
@@ -27,7 +24,7 @@ class AttendanceRequest extends FormRequest
             'date'        => 'required|date',
             'check_in'    => 'nullable|date_format:H:i:s',
             'check_out'   => 'nullable|date_format:H:i:s',
-            'status'      => 'required|in:present,late,absent,leave',
+            'status'      => ['required', new Enum(AttendanceStatus::class)],
             'notes'       => 'nullable|string',
         ];
     }

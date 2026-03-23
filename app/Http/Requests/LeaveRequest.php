@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\LeaveStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class LeaveRequest extends FormRequest
 {
@@ -12,7 +14,7 @@ class LeaveRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +30,7 @@ class LeaveRequest extends FormRequest
             'end_date'    => 'required|date|after_or_equal:start_date',
             'type'        => 'required|in:annual,sick,permission',
             'reason'      => 'nullable|string',
-            'status'      => 'required|in:pending,approved,rejected',
+            'status'      => ['required', new Enum(LeaveStatus::class)],
         ];
     }
 }
