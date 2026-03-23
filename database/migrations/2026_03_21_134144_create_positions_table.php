@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->foreignUlid('department_id')->constrained('departments')->cascadeOnDelete();
             $table->string('name');
-            $table->decimal('base_salary', 12,2)->default(0);
+            $table->decimal('base_salary', 15, 2)->default(0);
+            // REVISI: tambah level/grade jabatan untuk struktur organisasi
+            $table->string('level')->nullable(); // misal: staff, supervisor, manager, director
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

@@ -14,10 +14,17 @@ return new class extends Migration
         Schema::create('payroll_details', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('payroll_id')->constrained('payrolls')->cascadeOnDelete();
-
-            $table->string('type');
-            $table->string('description');
-            $table->decimal('amount', 12, 2);
+ 
+            // REVISI: tipe lebih lengkap
+            $table->enum('type', [
+                'earning',      // pendapatan (gaji pokok, tunjangan, bonus)
+                'deduction',    // potongan (BPJS, pajak, kasbon)
+                'overtime',     // lembur
+                'allowance',    // tunjangan makan, transport, dll
+            ]);
+ 
+            $table->string('description'); // misal: "Tunjangan Makan", "Potongan BPJS Kesehatan"
+            $table->decimal('amount', 15, 2);
             $table->timestamps();
         });
     }

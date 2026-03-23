@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->string('code')->unique()->nullable(); // kode departemen, misal: HRD, IT, FIN
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
