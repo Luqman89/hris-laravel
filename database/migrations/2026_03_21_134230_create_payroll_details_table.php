@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PayrollDetailType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,16 +16,11 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->foreignUlid('payroll_id')->constrained('payrolls')->cascadeOnDelete();
  
-            // REVISI: tipe lebih lengkap
-            $table->enum('type', [
-                'earning',      // pendapatan (gaji pokok, tunjangan, bonus)
-                'deduction',    // potongan (BPJS, pajak, kasbon)
-                'overtime',     // lembur
-                'allowance',    // tunjangan makan, transport, dll
-            ]);
+            $table->enum('type', array_column(PayrollDetailType::cases(), 'value'));
  
-            $table->string('description'); // misal: "Tunjangan Makan", "Potongan BPJS Kesehatan"
+            $table->string('description');
             $table->decimal('amount', 15, 2);
+ 
             $table->timestamps();
         });
     }
