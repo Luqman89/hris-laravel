@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class AttendanceRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'employee_id' => 'required|exists:employees,id',
+            'date'        => 'required|date',
+            'check_in'    => 'nullable|date_format:H:i:s',
+            'check_out'   => 'nullable|date_format:H:i:s',
+            'status'      => 'required|in:present,late,absent,leave',
+            'notes'       => 'nullable|string',
+        ];
+    }
+}
